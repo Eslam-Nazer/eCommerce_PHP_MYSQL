@@ -1,0 +1,92 @@
+/* Start Main Rulez */
+
+body {
+  background-color: #f4f4f4;
+}
+
+h1 {
+  font-size: 50px;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #666;
+}
+/* End Main Rulez */
+
+/* Start Bootstrap Edits */
+
+/* Start Dropdown Edits*/
+
+@media (min-width: 992px) {
+  #nav-app.collapse.navbar-collapse.dr-menu {
+    position: absolute;
+    right: 100px;
+  }
+}
+
+@media (max-width: 991px) {
+  .collapse:not(.show) {
+    display: block;
+  }
+}
+
+/* End Dropdown Edits*/
+
+/* End Bootstrap Edits */
+
+/* Start Header */
+.upper-bar {
+  padding: 10px;
+  background-color: #fff;
+}
+/* Start Header */
+
+/* Start login page */
+
+.login-page form {
+  max-width: 350px;
+  margin: auto;
+}
+
+.login-page form input {
+  margin-bottom: 10px;
+}
+
+.login-page .selected {
+  color: #0984e3;
+}
+
+.login-page h1 {
+  color: #b2bec3;
+}
+
+.login-page h1 span {
+  cursor: pointer;
+}
+
+.login-page .signup {
+  display: none;
+}
+/* End login page */
+
+/* Start Categories page */
+.item-box {
+  position: relative;
+  padding: 5px;
+}
+.item-box .price-tag {
+  position: absolute;
+  background-color: #b4b4b4;
+  padding: 2px 10px;
+  left: 0;
+  top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* End Categories page */
+
+/* Start Profile page */
+.block {
+  margin: 20px 0;
+}
+/* Start Profile page */
