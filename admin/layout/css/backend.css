@@ -1,0 +1,292 @@
+/* Start Main Rulez */
+
+body {
+  background-color: #f4f4f4;
+}
+
+/* End Main Rulez */
+
+/* Start Login From */
+
+.login {
+  width: 330px;
+  margin: 160px auto;
+}
+
+.login input {
+  margin-bottom: 10px;
+}
+
+/* End Login From */
+
+/* Start Bootstrap Edits */
+
+/* Start Dashboard Page */
+
+.home-stats .stat {
+  padding: 15px;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-stats .stat i {
+  font-size: 70px;
+  position: absolute;
+  top: 40px;
+  left: 30px;
+}
+
+.home-stats .stat .info {
+  float: right;
+}
+
+.home-stats .stat a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.home-stats .stat span {
+  display: block;
+  font-size: 60px;
+}
+
+.home-stats .st-members {
+  background-color: #3498db;
+}
+
+.home-stats .st-pending {
+  background-color: #c0392b;
+}
+
+.home-stats .st-items {
+  background-color: #d35400;
+}
+
+.home-stats .st-comments {
+  background-color: #8e44ad;
+}
+
+.latest {
+  margin-top: 30px;
+}
+
+.latest .toggle-info {
+  color: #999;
+  cursor: pointer;
+}
+
+.latest .toggle-info:hover {
+  color: #242323;
+}
+
+.latest-users {
+  margin-bottom: 0px;
+}
+
+.latest-users li {
+  padding: 5px 2px;
+  overflow: hidden;
+}
+
+.latest-users li:nth-child(odd) {
+  background-color: #eee;
+  border-radius: 13px;
+}
+
+.latest-users .btn-success,
+.latest-users .btn-info {
+  padding: 2px 8px;
+}
+
+.latest-users .btn-info {
+  margin-right: 5px;
+}
+
+/* End Dashboard Page */
+
+/* Start Items Edits*/
+
+@media (max-width: 991px) {
+  .nav-link {
+    padding-left: 12px;
+  }
+}
+
+.nav-link.active {
+  padding-right: 20px !important;
+}
+
+.col-md-4 {
+  width: 352px;
+}
+
+.add-item {
+  margin-bottom: 15px;
+}
+/* End Items Edits*/
+
+/* Start Dropdown Edits*/
+
+@media (min-width: 992px) {
+  #nav-app.collapse.navbar-collapse.dr-menu {
+    position: absolute;
+    right: 100px;
+  }
+}
+
+@media (max-width: 991px) {
+  .collapse:not(.show) {
+    display: block;
+  }
+}
+
+/* End Dropdown Edits*/
+
+/* End Bootstrap Edits */
+
+/* Start Members page */
+
+h1 {
+  font-size: 50px;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #666;
+}
+
+.form-floating.mb-3 {
+  margin: 10px auto;
+}
+
+.update-btn {
+  padding: 1px;
+  margin: 0px auto;
+}
+
+.main-table td {
+  background-color: #fff;
+  vertical-align: middle !important;
+}
+
+.main-table tr:first-child td {
+  /* You can use thead */
+  background-color: #333 !important;
+  color: #fff;
+}
+
+.main-table {
+  -webkit-box-shadow: 0px 4px 12px #ccc;
+  -moz-box-shadow: 0px 4px 12px #ccc;
+  box-shadow: 0px 4px 12px #ccc;
+}
+
+.activate {
+  margin-left: 5px;
+}
+
+/* End Members page */
+
+/* Start Categories manage page*/
+
+.categories .card-header {
+  font-weight: bold;
+  color: #707070;
+}
+
+.categories hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.categories .Ordering a {
+  color: #7f8c8d;
+  text-decoration: none;
+}
+
+.categories .Ordering .active {
+  color: #00b894;
+}
+
+.categories .card-body {
+  padding: 0;
+}
+
+.categories .cat {
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.categories .cat:hover {
+  background-color: #eee;
+}
+
+.categories .cat .hidden-buttons {
+  position: absolute;
+  top: 15px;
+  right: -200px;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.categories .cat:hover .hidden-buttons {
+  right: 10px;
+}
+
+.categories .cat .hidden-buttons a {
+  margin-right: 5px;
+}
+
+.categories .cat h3 {
+  margin: 0 0 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #6a6a6a;
+}
+
+.categories .cat:last-of-type ~ hr {
+  display: none;
+}
+
+.categories .cat .visibility,
+.categories .cat .commenting,
+.categories .cat .advertises {
+  color: #fff;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 6px;
+}
+
+.categories .cat .visibility.hidden {
+  background-color: #d63031;
+}
+
+.categories .cat .visibility.visible {
+  background-color: #00b894;
+}
+
+.categories .cat .commenting.com-dis {
+  background-color: #2d3436;
+}
+
+.categories .cat .commenting.com-enb {
+  background-color: #0984e3;
+}
+
+.categories .cat .advertises.ads-dis {
+  background-color: #e84393;
+}
+
+.categories .cat .advertises.ads-enb {
+  background-color: #6c5ce7;
+}
+
+a.btn.btn-primary.add-cat {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+/* End Categories manage page*/
