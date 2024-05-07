@@ -30,9 +30,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
     } else {
-        $userFiltering = preg_replace( "/[^a-zA-Z-_]/", ' ','<script>_<script><h5>eslam</h5>');
-
-        echo $userFiltering;
+        $formErrors = array();
+        if (isset($_POST['username'])) {
+            // $userFiltering = preg_replace( "/[^a-zA-Z-_]/", ' ','<script>eslam.test@gmail.com </script><h5></h5>1'=1''--');
+            // replace it to function to use in other situations of filtering
+            $userFiltering = filteringInput($_POST['username'], "USERNAME");
+            if (strlen($userFiltering) < 4) {
+                $formErrors[] = "User Name must be larger than 3 characters";
+            }
+        }
+        if (isset($_POST['password']) && isset($_POST['confirm_password'])) {
+            if(empty($_POST['password']) && empty($_POST['confirm_password'])) {
+                $formErrors[] = "Password can't be empty";
+            }
+            $password = sha1(filteringInput($_POST['password'], 'PASSWORD'));
+            $passwordConfirm = sha1(filteringInput($_POST['confirm_password'], 'PASSWORD'));
+            if ($password !== $passwordConfirm) {
+                $formErrors[] = 'Password is not match';
+            }
+        }
+        if (isset($_POST['email'])) {
+            $email = filteringInput(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL), 'EMAIL');
+                if (filter_var($email, FILTER_VALIDATE_EMAIL) != true) {
+                    $formErrors[] = 'This Email is not valid';
+                }
+            
+        }
     }
 }
 ?>
@@ -56,29 +79,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
     </form>
     <form class="signup form-floating" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-    <input type="text" name="test" />
-            <div class="form-floating">
-                <input type="text" name="username" class="form-control" id="floatingInputGrid" placeholder="username felid" required>
-                <label for="floatingInputGrid"><strong>User Name</strong></label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
-                <label for="floatingInputGrid"><strong>Password</strong></label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="confirm_password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
-                <label for="floatingInputGrid"><strong>Confirm Password</strong></label>
-            </div>
-            <div class="form-floating">
-                <input type="email" name="email" class="form-control" id="floatingInputGrid" placeholder="Email Felid" autocomplete="off" required>
-                <label for="floatingInputGrid"><strong>Email</strong></label>
-            </div>
-            <div class="d-grid gap-2">
-                <input type="submit" class="btn btn-success" name="signup" value="Signup">
-            </div>
+        <div class="form-floating">
+            <input pattern=".{4,}" title="User Name must be larger than 3 characters" type="text" name="username" class="form-control" id="floatingInputGrid" placeholder="username felid" required>
+            <label for="floatingInputGrid"><strong>User Name</strong></label>
+        </div>
+        <div class="form-floating">
+            <input minlength="8" type="password" name="password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
+            <label for="floatingInputGrid"><strong>Password</strong></label>
+        </div>
+        <div class="form-floating">
+            <input minlength="8" type="password" name="confirm_password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
+            <label for="floatingInputGrid"><strong>Confirm Password</strong></label>
+        </div>
+        <div class="form-floating">
+            <input type="email" name="email" class="form-control" id="floatingInputGrid" placeholder="Email Felid" autocomplete="off" >
+            <label for="floatingInputGrid"><strong>Email</strong></label>
+        </div>
+        <div class="d-grid gap-2">
+            <input type="submit" class="btn btn-success" name="signup" value="Signup">
+        </div>
     </form>
     <div class="the-errors text-center">
-        
+        <?php 
+            if (!empty($formErrors)){
+                foreach ($formErrors as $error){
+                    echo '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> ' . $error . '</div>';
+                }
+            }
+        ?>
     </div>
 </div>
 
