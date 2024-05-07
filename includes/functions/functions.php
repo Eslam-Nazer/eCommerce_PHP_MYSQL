@@ -146,3 +146,35 @@
 
         return $rows;
     }
+
+/**
+ * Filtering function v1.0
+ * $input => this parameter take input form users to filter it and get a valid result (input)
+ * $status => this parameter specifices what type of filter or which filter used in this situation
+ */
+
+    function filteringInput($input, $status) {
+        if ($status === "USERNAME") {
+            $filteringList = [
+                '/\x00|<[^>]*>?/',
+                "/[^a-zA-Z_1-9@]/"
+            ];
+            $filterResult = preg_replace( $filteringList, '',$input);
+        } elseif ($status === "PASSWORD") {
+            $filteringList = [
+                '/\x00|<[^>]*>?/',
+                "/[^a-zA-Z_1-9@&$.#%]/"
+            ];
+            $filterResult = preg_replace( $filteringList, '',$input);
+        } elseif ($status === "EMAIL") {
+            $filteringList = [
+                '/\x00|<[^>]*>?/',
+                "/[^a-zA-Z_1-9@.]/"
+            ];
+            $filterResult = preg_replace($filteringList, '', $input);
+        } else {
+            echo 'Must choose a status';
+        }
+
+        if (isset($filterResult)) {return $filterResult;};
+    }
