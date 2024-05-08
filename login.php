@@ -31,30 +31,48 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         $formErrors = array();
-        if (isset($_POST['username'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirm_password'];
+        $email = $_POST['email'];
+        if (isset($username)) {
             // $userFiltering = preg_replace( "/[^a-zA-Z-_]/", ' ','<script>eslam.test@gmail.com </script><h5></h5>1'=1''--');
             // replace it to function to use in other situations of filtering
-            $userFiltering = filteringInput($_POST['username'], "USERNAME");
-            if (strlen($userFiltering) < 4) {
+            $filterUser = filteringInput($username, "USERNAME");
+            if (strlen($filterUser) < 4) {
                 $formErrors[] = "User Name must be larger than 3 characters";
             }
         }
-        if (isset($_POST['password']) && isset($_POST['confirm_password'])) {
-            if(empty($_POST['password']) && empty($_POST['confirm_password'])) {
+        if (isset($password) && isset($confirmPassword)) {
+            if(empty($password) && empty($confirmPassword)) {
                 $formErrors[] = "Password can't be empty";
             }
-            $password = sha1(filteringInput($_POST['password'], 'PASSWORD'));
-            $passwordConfirm = sha1(filteringInput($_POST['confirm_password'], 'PASSWORD'));
-            if ($password !== $passwordConfirm) {
+            $filterPassword        = sha1(filteringInput($password, 'PASSWORD'));
+            $filterConfirmPassword = sha1(filteringInput($confirmPassword, 'PASSWORD'));
+            if ($filterPassword !== $filterConfirmPassword) {
                 $formErrors[] = 'Password is not match';
             }
         }
-        if (isset($_POST['email'])) {
-            $email = filteringInput(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL), 'EMAIL');
-                if (filter_var($email, FILTER_VALIDATE_EMAIL) != true) {
+        if (isset($email)) {
+            $filterEmail = filteringInput(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL), 'EMAIL');
+                if (filter_var($filterEmail, FILTER_VALIDATE_EMAIL) != true) {
                     $formErrors[] = 'This Email is not valid';
                 }
             
+        }
+        if (empty($formErrors)){
+            $checkForUser = checkItems('Username', 'users', $filterUser);
+            if ($checkForUser == 1) {
+                $formErrors[] = 'This username already exist';
+            } else {
+                $stmt = $con->prepare('INSERT INTO users(Username, Password, Email, RegStatus, Date) VALUES(:username, :password, :email, 0, now())');
+                $stmt->execute(array(
+                    'username' => $filterUser,
+                    'password' => $filterPassword,
+                    'email'    => $filterEmail
+                ));
+                $successMsg = "Congrats you are now registerd user";
+            }
         }
     }
 }
@@ -66,17 +84,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <span data-class="signup">Signup</span>
     </h1>
     <form class="login form-floating" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-            <div class="form-floating">
-                <input type="text" name="username" class="form-control" id="floatingInputGrid" placeholder="username felid" required>
-                <label for="floatingInputGrid"><strong>User Name</strong></label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
-                <label for="floatingInputGrid"><strong>Password</strong></label>
-            </div>
-            <div class="d-grid gap-2">
-                <input type="submit" class="btn btn-primary" name="login" value="Login">
-            </div>
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" id="floatingInputGrid" placeholder="username felid" required>
+            <label for="floatingInputGrid"><strong>User Name</strong></label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" class="form-control" id="floatingInputGrid" placeholder="password felid" autocomplete="new-password" required>
+            <label for="floatingInputGrid"><strong>Password</strong></label>
+        </div>
+        <div class="d-grid gap-2">
+            <input type="submit" class="btn btn-primary" name="login" value="Login">
+        </div>
     </form>
     <form class="signup form-floating" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
         <div class="form-floating">
@@ -103,8 +121,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php 
             if (!empty($formErrors)){
                 foreach ($formErrors as $error){
-                    echo '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> ' . $error . '</div>';
+                    echo '<div class="msg error" ><i class="fa-solid fa-triangle-exclamation"></i> ' . $error . '</div>';
                 }
+            }
+            if (isset($successMsg)) {
+                echo '<div class="msg success"><i class="fa-solid fa-circle-check"></i> ' . $successMsg . '</div>';
             }
         ?>
     </div>
