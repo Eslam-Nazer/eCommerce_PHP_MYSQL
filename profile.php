@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 session_start();
 $pageTitle = 'Profile';
 
@@ -18,11 +19,13 @@ if (isset($_SESSION['user'])){
         <div class="card border-primary ">
             <h5 class="card-header text-bg-primary">My information</h5>
             <div class="card-body">
-                Name: <?php echo $info['Username']; ?> <br />
-                Email: <?php echo $info['Email']; ?> <br />
-                Full Name: <?php echo $info['FullName']; ?> <br />
-                Register Date: <?php echo $info['Date']; ?> <br />
-                Favourite Category:
+                <ul class="list-unstyled">
+                    <li><i class="fa-solid fa-unlock fa-fw"></i> <span>Login Name</span> : <?php echo $info['Username']; ?> </li>
+                    <li><i class="fa-solid fa-envelope fa-fw"></i> <span>Email</span> : <?php echo $info['Email']; ?> </li>
+                    <li><i class="fa-solid fa-user-check fa-fw"></i> <span>Full Name</span> : <?php echo $info['FullName']; ?> </li>
+                    <li><i class="fa-regular fa-calendar-days fa-fw"></i> <span>Register Date</span> : <?php echo $info['Date']; ?> </li>
+                    <li><i class="fa-regular fa-tags fa-fw"></i> <span>Favourite Category</span> : </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -32,9 +35,10 @@ if (isset($_SESSION['user'])){
         <div class="card border-primary ">
             <h5 class="card-header text-bg-primary">My Advertisements</h5>
             <div class="card-body">
-                <div class="row gx-5">
-                    <?php 
-                    $items = getItems('Member_ID', $info['UserID']);
+                <?php 
+                $items = getItems('Member_ID', $info['UserID']);
+                if (!empty($items)) {
+                    echo '<div class="row gx-5">';
                     foreach ($items as $item) {
                         echo '<div class="col-sm-6 col-md-4 col-lg-3">';
                         echo '<div class="card item-box" style="width: 18rem;">';
@@ -48,8 +52,11 @@ if (isset($_SESSION['user'])){
                         echo '</div>';
                         echo '</div>';
                     }
-                    ?>
-                </div>
+                    echo '</div>';
+                } else {
+                    echo 'There is no <strong>ads</strong> to show';
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -85,4 +92,5 @@ if (isset($_SESSION['user'])){
 }
 
 include $tplDir . 'footer.php';
+ob_end_flush();
 ?>
