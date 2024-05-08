@@ -42,7 +42,8 @@ h1 {
 
 /* Start login page */
 
-.login-page form {
+.login-page form,
+.the-errors {
   max-width: 350px;
   margin: auto;
 }
@@ -65,6 +66,24 @@ h1 {
 
 .login-page .signup {
   display: none;
+}
+
+.the-errors .msg {
+  padding: 10px;
+  text-align: left;
+  border-left: 5px solid #ff7675;
+  background-color: #fff;
+  margin-bottom: 8px;
+  border-right: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #919191;
+}
+.the-errors .error {
+  border-left: 5px solid #ff7675;
+}
+.msg.success {
+  border-left: 5px solid #00cec9;
 }
 /* End login page */
 
@@ -89,4 +108,23 @@ h1 {
 .block {
   margin: 20px 0;
 }
+
+.information ul {
+  padding: 0;
+  margin: 0;
+}
+
+.information ul li {
+  padding: 10px;
+}
+
+.information ul li:nth-child(odd) {
+  background-color: #c1daff;
+}
+
+.information ul li span {
+  display: inline-block;
+  width: 160px;
+}
+
 /* Start Profile page */
