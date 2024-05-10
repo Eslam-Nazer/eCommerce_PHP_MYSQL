@@ -54,7 +54,7 @@ if (isset($_SESSION['user'])){
                     }
                     echo '</div>';
                 } else {
-                    echo 'There is no <strong>ads</strong> to show';
+                    echo 'There is no <strong>ads</strong> to show, Create <a href="newad.php" class="btn btn-sm btn-primary" >New Ad</a>';
                 }
                 ?>
             </div>
