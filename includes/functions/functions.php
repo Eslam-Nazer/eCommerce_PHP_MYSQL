@@ -148,7 +148,7 @@
     }
 
 /**
- * Filtering function v1.0
+ * Filtering function v1.1
  * $input => this parameter take input form users to filter it and get a valid result (input)
  * $status => this parameter specifices what type of filter or which filter used in this situation
  */
@@ -172,6 +172,12 @@
                 "/[^a-zA-Z_1-9@.]/"
             ];
             $filterResult = preg_replace($filteringList, '', $input);
+        } elseif ($status === "STRING") {
+            $filteringList = [
+                '/\x00|<[^>]*>?/',
+                "/[^a-zA-Z_ 1-9-]/"
+            ];
+            $filterResult = preg_replace( $filteringList, '',$input);
         } else {
             echo 'Must choose a status';
         }
