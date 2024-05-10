@@ -16,25 +16,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hashedPassword = sha1($pass);
 
         //Check if this user exist in database
-        $stmt = $con->prepare('SELECT Username,Password FROM users WHERE Username = :user AND Password = :pass AND GroupID != 1');
+        $stmt = $con->prepare('SELECT UserID,Username,Password FROM users WHERE Username = :user AND Password = :pass AND GroupID != 1');
         $stmt->execute(array(
             'user' => $user,
             'pass' => $hashedPassword
         ));
+        $get   = $stmt->fetch();
         $count = $stmt->rowCount();
         
         //if count > 0 this mean the database have record about this user
         if($count > 0) {
             $_SESSION['user'] = $user;
+            $_SESSION['uid']  = $get['UserID'];
             header('Location: index.php');
             exit();
         }
     } else {
         $formErrors = array();
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username        = $_POST['username'];
+        $password        = $_POST['password'];
         $confirmPassword = $_POST['confirm_password'];
-        $email = $_POST['email'];
+        $email           = $_POST['email'];
         if (isset($username)) {
             // $userFiltering = preg_replace( "/[^a-zA-Z-_]/", ' ','<script>eslam.test@gmail.com </script><h5></h5>1'=1''--');
             // replace it to function to use in other situations of filtering
