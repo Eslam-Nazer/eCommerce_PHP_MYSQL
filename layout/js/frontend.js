@@ -26,4 +26,15 @@ $(function () {
         hideEffectSpeed: 400
     });
 
+    $('.live-name').keyup(function () {
+        $('.live-preview .card-title h3').text($(this).val());
+    });
+
+    $('.live-desc').keyup(function () {
+        $('.live-preview .card-text').text($(this).val());
+    });
+
+    $('.live-price').keyup(function () {
+        $('.live-preview .price-tag').text($(this).val() + '$');
+    });
 });
