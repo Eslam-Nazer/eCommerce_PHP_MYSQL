@@ -5,13 +5,50 @@ $pageTitle = "Create New Item";
 include 'init.php';
 if (isset($_SESSION['user'])) {
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $name = $_POST['name'];
-        $desc = $_POST['description'];
-        $price = $_POST['price'];
-        $country = $_POST['country'];
-        $status = $_POST['status'];
-        $cat = $_POST['category'];
+        $formErrors = array();
+        $name    = filteringInput($_POST['name'], 'STRING');
+        $desc    = filteringInput($_POST['description'], 'STRING');
+        $price   = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
+        $country = filteringInput($_POST['country'], "STRING");
+        $status  = filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
+        $category     = filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
 
+        if (strlen($name) < 4) {
+            $formErrors[] = 'Name of item must be at least 4 characters';
+        }
+        if (strlen($desc) < 10) {
+            $formErrors[] = 'Description of item must be at least 10 characters';
+        }
+        if (strlen($country) < 2) {
+            $formErrors[] = 'Country filed must be at least 2 characters';
+        }
+        if (empty($price) || $price == 0) {
+            $formErrors[] = 'Price of item must be not empty';
+        }
+        if (empty($status) || $status == 0) {
+            $formErrors[] = 'Status of item must be not empty';
+        }
+        if (empty($category) || $category == 0) {
+            $formErrors[] = 'Category of item must be not empty';
+        }
+        if (empty($formErrors)) {
+            $stmt = $con->prepare('INSERT INTO Items(Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID) 
+            VALUES(:name, :desc, :price, now(), :country, :status, :category, :user)');
+            $stmt->execute(array(
+                'name'     => $name,
+                'desc'     => $desc,
+                'price'    => $price,
+                'country'  => $country,
+                'status'   => $status,
+                'category' => $category,
+                'user'     => $_SESSION['uid']
+            ));
+            if ($stmt) {
+                echo '<div class="container">';
+                echo '<div class="alert alert-success" role="alert"><i class"fa-solid fa-circle-check"> Item add successfully</i></div>';
+                echo '</div>';
+            }
+        }
     }
 ?>
 <h1 class="text-center"><?php echo $pageTitle ?></h1>
@@ -91,6 +128,15 @@ if (isset($_SESSION['user'])) {
                         </div>
                     </div>
                 </div>
+                <!-- Start Errors Loop -->
+                <?php 
+                if (!empty($formErrors)){
+                    foreach ($formErrors as $error) {
+                        echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+                    }
+                }
+                ?>
+                <!-- End Errors Loop -->
             </div>
         </div>
     </div>
