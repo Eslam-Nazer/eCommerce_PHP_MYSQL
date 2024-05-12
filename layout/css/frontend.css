@@ -127,4 +127,40 @@ h1 {
   width: 160px;
 }
 
-/* Start Profile page */
+.item-box .date {
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: bold;
+}
+
+/* End Profile page */
+
+/* Start items info page */
+
+.item-info h2 {
+  padding: 10px;
+  margin: 0;
+}
+
+.item-info p {
+  padding: 10px;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.item-info ul li {
+  padding: 10px;
+}
+
+.item-info ul li:nth-child(odd) {
+  background-color: #c1daff;
+}
+
+.item-info ul li span {
+  display: inline-block;
+  width: 160px;
+  padding: 0 5px;
+}
+
+/* End items info page */
