@@ -2,7 +2,7 @@
 
 
 <div class="container">
-    <h1 class="text-center"><?php echo str_replace('-', ' ', $_GET['pagename']); ?></h1>
+    <h1 class="text-center">Show items</h1>
         <div class="row gx-5">
             <?php 
             $items = getItems('Cat_ID' ,$_GET['pageid']);
@@ -14,7 +14,7 @@
                 echo '<div class="card-body">';
                 echo '<h3 class="card-title">' . $item['Name'] . '</h3>';
                 echo '<p class="card-text">' . $item['Description'] . '</p>';
-                echo '<a href="#" class="btn btn-primary">Go somewhere</a>';
+                echo '<a href="items.php?itemid=' . $item['Item_ID'] . '" class="btn btn-primary">Show Item</a>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';

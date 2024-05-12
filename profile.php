@@ -13,7 +13,6 @@ if (isset($_SESSION['user'])){
 ?>
 
 <h1 class="text-center">My Profile</h1>
-
 <div class="information block">
     <div class="container">
         <div class="card border-primary ">
@@ -47,7 +46,8 @@ if (isset($_SESSION['user'])){
                         echo '<div class="card-body">';
                         echo '<h3 class="card-title">' . $item['Name'] . '</h3>';
                         echo '<p class="card-text">' . $item['Description'] . '</p>';
-                        echo '<a href="#" class="btn btn-primary">Go somewhere</a>';
+                        echo '<div class="date">' . $item['Add_Date'] . '</div>';
+                        echo '<a href="items.php?itemid=' . $item['Item_ID'] . '" class="btn btn-primary">Show Item</a>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
