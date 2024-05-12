@@ -50,7 +50,7 @@
                     $categories = getCats();
 
                     foreach ($categories as $cat) {
-                        echo '<li class="nav-link"><a class="nav-link active" href="categories.php?pageid=' . $cat['ID'] . '&pagename=' . str_replace(' ', '-', $cat['Name']) . '">' . $cat['Name'] . '</a></li>';
+                        echo '<li class="nav-link"><a class="nav-link active" href="categories.php?pageid=' . $cat['ID'] .'">' . $cat['Name'] . '</a></li>';
                     }
                 ?>
             </ul>
