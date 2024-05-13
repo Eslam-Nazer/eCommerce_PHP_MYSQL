@@ -33,13 +33,63 @@ $item = $stmt->fetch();
         </div>
     </div>
     <hr />
+    <!-- Start Add Comment -->
+    <?php if (isset($_SESSION['user'])) { ?>
     <div class="row">
-        <div class="col-md-3">
-            user image
+        <div class="col-md-3 offset-md-3">
+            <div class="add-comment">
+                <h3>Add Comment</h3>
+                <form action="<?php echo $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID'] ?>" method="POST">
+                    <textarea name="comment"></textarea>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add comment">
+                </form>
+                <?php 
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $comment    = filteringInput($_POST['comment'], 'STRING');
+                    $itemid     = filter_var($item['Item_ID'], FILTER_SANITIZE_NUMBER_INT);
+                    if (!empty($comment)) {
+                        $stmt = $con->prepare('INSERT INTO comments(comment, comment_date, status, item_id, user_id) 
+                        VALUES(:comment, NOW(), 0, :itemid, :userid)');
+                        $stmt->execute(array(
+                            'comment'   => $comment,
+                            'userid'    => $_SESSION['uid'],
+                            'itemid'    => $itemid
+                        ));
+                        if ($stmt) {
+                            echo '<div class="alert alert-info" role="alert"><i class="fa-solid fa-circle-check"></i> Comment recored added successfully</div>';
+                        }
+                    }
+                }
+                ?>
+            </div>
         </div>
-        <div class="col-md-9">
-            user comment
-        </div>
+    </div>
+    <?php } else {
+        echo '<a href="login.php">Login</a> or <a href="login.php">Register</a> to add comment';
+    } ?>
+    <!-- End Add Comment -->
+    <hr />
+    <div class="row show-comment">
+        <?php 
+        $stmt = $con->prepare('SELECT comments.*, users.Username AS Member FROM comments 
+        INNER JOIN users ON users.UserID = comments.user_id WHERE item_id = :itemid AND status = 1 ORDER BY c_id DESC');
+        $stmt->execute(array(
+            'itemid' => $itemid
+        ));
+        $comments = $stmt->fetchAll();
+        foreach ($comments as $comment) { 
+            ?>
+            <div class="col-sm-2 text-center">
+                <img src="img.jpg" class="rounded-circle img-thumbnail" alt="...">
+                <?php echo $comment['Member']; ?>
+            </div>
+            <div class="col-sm-10">
+                <p class="lead"><?php echo $comment['comment'] ?></p>
+                <br />
+                <span class="fst-italic fw-light"><?php echo $comment['comment_date']; ?></span>
+            </div>
+            <hr />
+        <?php } ?>
     </div>
 </div>
 
