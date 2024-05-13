@@ -2,6 +2,7 @@
 
 body {
   background-color: #f4f4f4;
+  height: 1000px;
 }
 
 h1 {
@@ -163,4 +164,43 @@ h1 {
   padding: 0 5px;
 }
 
+.add-comment h3 {
+  margin: 0 0 10px;
+}
+
+.add-comment textarea {
+  display: block;
+  margin-bottom: 10px;
+  width: 400px;
+  height: 100px;
+}
+
+.add-comment .alert.alert-info {
+  width: 350px;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.show-comment hr {
+  margin: 10px 0;
+}
+
+.show-comment img {
+  max-width: 100px;
+  display: block;
+  margin: 2px auto;
+}
+
+.show-comment .lead {
+  padding: 10px;
+  text-align: left;
+  border-left: 5px solid #0984e3;
+  background-color: #fff;
+  margin-bottom: 8px;
+  border-right: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #919191;
+}
 /* End items info page */
