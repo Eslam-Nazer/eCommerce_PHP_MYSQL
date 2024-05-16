@@ -62,13 +62,13 @@ if (isset($_SESSION['user'])) {
                         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
                             <!-- Start name field -->
                             <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
-                                <input class="form-control live-name" type="text" name="name" id="floatingInput" placeholder="Name of the item" required>
+                                <input class="form-control live-name" type="text" name="name" id="floatingInput" placeholder="Name of the item" pattern=".{4,}" title="This field require at least 4 characters" required>
                                 <label for="floatingInput" style="font-weight: bold;">Name of item</label>
                             </div>
                             <!-- End name field -->
                             <!-- Start Description field -->
                             <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
-                                <input class="form-control live-desc" type="text" name="description" id="floatingInput" placeholder="Name of the item" required>
+                                <input class="form-control live-desc" type="text" name="description" id="floatingInput" placeholder="Name of the item" pattern=".{10,}" title="This field require at least 10 characters" required>
                                 <label for="floatingInput" style="font-weight: bold;">Description</label>
                             </div>
                             <!-- End Description field -->
@@ -80,13 +80,13 @@ if (isset($_SESSION['user'])) {
                             <!-- End Price field -->
                             <!-- Start Country field -->
                             <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
-                                <input class="form-control" type="text" name="country" id="floatingInput" placeholder="Country of made" required>
+                                <input class="form-control" type="text" name="country" id="floatingInput" placeholder="Country of made" pattern=".{2,}" title="This field require at least 2 characters" required>
                                 <label for="floatingInput" style="font-weight: bold;">Country of made</label>
                             </div>
                             <!-- End Country field -->
                             <!-- Start Status field -->
                             <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
-                                <select name="status">
+                                <select name="status" required>
                                     <option value="0" selected>Choose Status of item</option>
                                     <option value="1">New</option>
                                     <option value="2">Like New</option>
@@ -97,7 +97,7 @@ if (isset($_SESSION['user'])) {
                             <!-- End Status field -->
                             <!-- Start Category field -->
                             <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
-                                <select name="category">
+                                <select name="category" required>
                                     <option value="0" selected>Choose Category</option>
                                     <?php
                                     $stmt = $con->prepare('SELECT ID, Name FROM categories');
