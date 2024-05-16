@@ -32,13 +32,20 @@
     }
 
 /**
- * Get categories record Function V1.1
+ * Get items record Function V2.0
+ * $column  = For Select a special column
+ * $value   = to match value for column in tabel
+ * $approve = to show or hidden approved item
  */
 
-    function getItems($column,$value) {
+    function getItems($column,$value,$approve = null) {
     global $con;
-
-    $stmtCats = $con->prepare('SELECT * FROM items WHERE '. $column .' = :value ORDER BY Item_ID');
+        if ($approve == 1) {
+            $approve = 'AND Approve = 1';
+        } else {
+            $approve = null;
+        }
+    $stmtCats = $con->prepare('SELECT * FROM items WHERE '. $column .' = :value ' . $approve . ' ORDER BY Item_ID');
     $stmtCats->execute(array(
         'value' => $value
     ));
