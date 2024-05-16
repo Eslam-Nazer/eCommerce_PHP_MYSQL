@@ -6,7 +6,7 @@ include 'init.php';
 $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
 $stmt = $con->prepare('SELECT items.*, categories.Name AS NameOfCat, users.Username FROM items 
 INNER JOIN users ON users.UserID = items.Member_ID 
-INNER JOIN categories ON categories.ID = items.Cat_ID WHERE Item_ID = :itemid');
+INNER JOIN categories ON categories.ID = items.Cat_ID WHERE Item_ID = :itemid AND Approve = 1');
 $stmt->execute(array(
     'itemid' => $itemid
 )); 
@@ -40,7 +40,7 @@ $item = $stmt->fetch();
             <div class="add-comment">
                 <h3>Add Comment</h3>
                 <form action="<?php echo $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID'] ?>" method="POST">
-                    <textarea name="comment"></textarea>
+                    <textarea name="comment" required></textarea>
                     <input class="btn btn-primary btn-sm" type="submit" value="Add comment">
                 </form>
                 <?php 
@@ -58,6 +58,8 @@ $item = $stmt->fetch();
                         if ($stmt) {
                             echo '<div class="alert alert-info" role="alert"><i class="fa-solid fa-circle-check"></i> Comment recored added successfully</div>';
                         }
+                    } else {
+                        echo '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-circle-xmark"></i> Comment Can\'t be empty</div>';
                     }
                 }
                 ?>
@@ -96,7 +98,7 @@ $item = $stmt->fetch();
 <?php 
 } else {
     echo '<div class="container">';
-    $errorMsg = '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-circle-xmark"></i> There is no such ID </div>';
+    $errorMsg = '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-circle-xmark"></i> There is no such ID Or this item watting aproval</div>';
     redirectHome($errorMsg);
     echo '</div>';
 }
