@@ -29,10 +29,10 @@ if (isset($_SESSION['user'])){
         </div>
     </div>
 </div>
-<div class="my-ads block">
+<div id="my-ads" class="my-ads block">
     <div class="container">
         <div class="card border-primary ">
-            <h5 class="card-header text-bg-primary">My Advertisements</h5>
+            <h5 class="card-header text-bg-primary">My Items Advertisements</h5>
             <div class="card-body">
                 <?php 
                 $items = getItems('Member_ID', $info['UserID']);
@@ -43,11 +43,16 @@ if (isset($_SESSION['user'])){
                         echo '<div class="card item-box" style="width: 18rem;">';
                         echo '<span class="price-tag">' . $item['Price'] . '</span>';
                         echo '<img src="img.jpg" class="card-img-top img-thumbnail" alt="...">';
-                        echo '<div class="card-body">';
+                        echo '<div class="card-body msg">';
                         echo '<h3 class="card-title">' . $item['Name'] . '</h3>';
+                        echo '<div class="caption">';
                         echo '<p class="card-text">' . $item['Description'] . '</p>';
+                        echo '</div>';
                         echo '<div class="date">' . $item['Add_Date'] . '</div>';
                         echo '<a href="items.php?itemid=' . $item['Item_ID'] . '" class="btn btn-primary">Show Item</a>';
+                        if ($item['Approve'] == 0) { ?>
+                            <div class="approve-msg text-center"><i class="fa-solid fa-circle-info"></i>Not Approved</div>
+                        <?php }
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
