@@ -39,6 +39,11 @@ h1 {
   padding: 10px;
   background-color: #fff;
 }
+
+.upper-bar .my-info img {
+  width: 40px;
+}
+
 /* Start Header */
 
 /* Start login page */
@@ -110,6 +115,10 @@ h1 {
   margin: 20px 0;
 }
 
+.item-box {
+  position: relative;
+}
+
 .information ul {
   padding: 0;
   margin: 0;
@@ -133,6 +142,23 @@ h1 {
   font-size: 13px;
   color: #aaa;
   font-weight: bold;
+}
+
+.msg .approve-msg {
+  padding: 10px;
+  text-align: left;
+  border-left: 5px solid #0984e3;
+  background-color: #fff;
+  margin-bottom: 8px;
+  border-right: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #919191;
+  margin: 5px 0 -15px;
+}
+
+.msg .approve-msg i {
+  margin-right: 5px;
 }
 
 /* End Profile page */
