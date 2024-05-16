@@ -16,15 +16,25 @@
 <body>
     <div class="upper-bar">
         <div class="container">
-            <?php if (isset($_SESSION['user'])) {
-                echo 'Welcome ' . $_SESSION['user'];
+            <?php if (isset($_SESSION['user'])) { ?>
+                <div class="btn-group my-info">
+                    <img src="img.jpg" class="rounded-circle img-thumbnail" alt="...">
+                    <span class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <?php echo $_SESSION['user']; ?>
+                    <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.php">My Profile</a></li>
+                        <li><a href="logout.php">Create New Item</a></li>
+                        <li><a href="profile.php#my-ads">My Items</a></li>
+                        <li><a href="newad.php">Logout</a></li>
+                    </ul>
+                </div>
+                <?php
                 $statusOfUser = checkUserStatus($_SESSION['user']);
                 if ($statusOfUser == 1) {
-                    echo ' Your Membership need to active by admin ';
+                    echo '<div class="float-end">Your Membership need to active by admin</div>';
                 }
-                echo '<a href="profile.php">My Profile</a>';
-                echo ' - <a href="logout.php">Logout</a>';
-                echo ' - <a href="newad.php"> Create New Ad</a>';
                 } else { ?>
                 upper
                 <a href="login.php">
