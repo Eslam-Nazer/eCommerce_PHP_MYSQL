@@ -25,9 +25,9 @@
                     </span>
                     <ul class="dropdown-menu">
                         <li><a href="profile.php">My Profile</a></li>
-                        <li><a href="logout.php">Create New Item</a></li>
+                        <li><a href="newad.php">Create New Item</a></li>
                         <li><a href="profile.php#my-ads">My Items</a></li>
-                        <li><a href="newad.php">Logout</a></li>
+                        <li><a href="logout.php">Logout</a></li>
                     </ul>
                 </div>
                 <?php
@@ -58,7 +58,6 @@
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <?php
                     $categories = getCats();
-
                     foreach ($categories as $cat) {
                         echo '<li class="nav-link"><a class="nav-link active" href="categories.php?pageid=' . $cat['ID'] .'">' . $cat['Name'] . '</a></li>';
                     }
