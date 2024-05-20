@@ -44,9 +44,7 @@ if (isset($_SESSION['user'])) {
                 'user'     => $_SESSION['uid']
             ));
             if ($stmt) {
-                echo '<div class="container">';
-                echo '<div class="alert alert-success" role="alert"><i class"fa-solid fa-circle-check"> Item add successfully</i></div>';
-                echo '</div>';
+                $successMsg =  '<div class="alert alert-success" role="alert"><i class"fa-solid fa-circle-check"> Item add successfully</i></div>';
             }
         }
     }
@@ -133,6 +131,10 @@ if (isset($_SESSION['user'])) {
                 if (!empty($formErrors)){
                     foreach ($formErrors as $error) {
                         echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+                    }
+                } else {
+                    if(isset($successMsg)) {
+                        echo $successMsg;
                     }
                 }
                 ?>
