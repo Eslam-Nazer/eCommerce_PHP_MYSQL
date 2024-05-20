@@ -1,11 +1,16 @@
 <?php
 ob_start();
 session_start();
-include 'init.php'; ?>
+include 'init.php'; 
+
+$stmt = $con->prepare('SELECT Name FROM categories WHERE ID = '. $_GET['pageid']);
+$stmt->execute();
+$categoryName = $stmt->fetch();
+?>
 
 
 <div class="container">
-    <h1 class="text-center">Show items</h1>
+    <h1 class="text-center"><?php echo $categoryName['Name'] ?></h1>
         <div class="row gx-5">
             <?php 
             $items = getItems('Cat_ID' ,$_GET['pageid'], 1);
