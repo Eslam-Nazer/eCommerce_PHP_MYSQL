@@ -289,4 +289,33 @@ a.btn.btn-primary.add-cat {
   margin-bottom: 30px;
 }
 
+.categories .child-head {
+  margin: 15px 0 0 15px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #00b894;
+}
+
+.list-unstyled.child-ul {
+  margin-bottom: 0;
+}
+
+.categories .child-list {
+  margin: 5px 0 5px 30px;
+  font-weight: bold;
+}
+
+.categories .child-list::before {
+  content: "- ";
+}
+
+.categories .child-list a {
+  text-decoration: none;
+}
+
+.categories .child-list .show-delete {
+  color: #f00;
+  display: none;
+  margin-left: 20px;
+}
 /* End Categories manage page*/
