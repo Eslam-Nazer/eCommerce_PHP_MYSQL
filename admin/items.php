@@ -143,18 +143,29 @@ if (isset($_SESSION['Username'])) {
                         <select name="category">
                             <option value="0" selected>Choose Category</option>
                             <?php
-                            $stmt = $con->prepare('SELECT ID, Name FROM categories');
+                            $stmt = $con->prepare('SELECT ID, Name FROM categories WHERE parent = 0');
                             $stmt->execute();
                             $cats = $stmt->fetchAll();
 
                             foreach ($cats as $cat) {
                                 echo '<option value="' . $cat['ID'] . '">' . $cat['Name'] . '</option>';
+                                $stmt = $con->prepare("SELECT ID, Name FROM categories WHERE parent = {$cat['ID']}");
+                                $stmt->execute();
+                                $childCats = $stmt->fetchAll();
+                                foreach ($childCats as $childCat) {
+                                    echo '<option value = "'. $childCat['ID'] .'"> ' . $cat['Name'] . ' > ' . $childCat['Name'] . ' </option>';
+                                }
                             }
                             ?>
                         </select>
                     </div>
                     <!-- End Category field -->
-
+                    <!-- Start tags field -->
+                    <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
+                        <input class="form-control" type="text" name="tags" id="floatingInput" placeholder="Add Tags for your product">
+                        <label for="floatingInput" style="font-weight: bold;">Tags</label>
+                    </div>
+                    <!-- End tags field -->
                     <!-- Start save button -->
                     <div class="form-group row mb-3">
                         <div class="update-btn col-sm-5 d-grid gap-2">
@@ -180,6 +191,7 @@ if (isset($_SESSION['Username'])) {
             $status     = $_POST['status'];
             $member     = $_POST['member'];
             $category   = $_POST['category'];
+            $tags       = $_POST['tags'];
 
             $formErrors = array();
 
@@ -211,7 +223,7 @@ if (isset($_SESSION['Username'])) {
             }
 
             if (empty($formErrors)) {
-                $stmt = $con->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID) VALUES (:name, :desc, :price, NOW(), :country, :status, :categoryID, :memberID)');
+                $stmt = $con->prepare('INSERT INTO items (Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID, tags) VALUES (:name, :desc, :price, NOW(), :country, :status, :categoryID, :memberID, :tags)');
                 $stmt->execute(array(
                     'name'      => $name,
                     'desc'      => $desc,
@@ -219,7 +231,8 @@ if (isset($_SESSION['Username'])) {
                     'country'   => $country,
                     'status'    => $status,
                     'categoryID'=> $category,
-                    'memberID'  => $member
+                    'memberID'  => $member,
+                    'tags'      => $tags
                 ));
 
                 $successMsg = '<div class="alert alert-success" role="alert"><i class="fa-solid fa-circle-check"></i> ' . $stmt->rowCount() . ' Record Inserted</div>';
@@ -326,7 +339,12 @@ if (isset($_SESSION['Username'])) {
                         </select>
                     </div>
                     <!-- End Category field -->
-
+                    <!-- Start Tags field -->
+                    <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
+                        <input type="text" class="form-control" name="tags" id="floatingInput" placeholder="Add Tags for your product" value="<?php echo $item['tags']; ?>">
+                        <label for="floatingInput" style="font-weight: bold;" >Tags</label>
+                    </div>
+                    <!-- End Tags field -->
                     <!-- Start save button -->
                     <div class="form-group row mb-3">
                         <div class="update-btn col-sm-5 d-grid gap-2">
@@ -394,6 +412,7 @@ if (isset($_SESSION['Username'])) {
         $status  = $_POST['status'];
         $member  = $_POST['member'];
         $cat     = $_POST['category'];
+        $tags    = $_POST['tags'];
 
         // Validate form
         $formErrors = array();
@@ -426,7 +445,7 @@ if (isset($_SESSION['Username'])) {
             }
 
             if (empty($formErrors)) {
-                $stmt = $con->prepare('UPDATE items SET Name = :name, Description = :desc, Price = :price, Country_Made = :country, Status = :status, Member_ID = :member, Cat_ID = :catrgory WHERE Item_ID = :itemid');
+                $stmt = $con->prepare('UPDATE items SET Name = :name, Description = :desc, Price = :price, Country_Made = :country, Status = :status, Member_ID = :member, Cat_ID = :catrgory , tags = :tags WHERE Item_ID = :itemid');
                 $stmt->execute(array(
                     'name'      => $name,
                     'desc'      => $desc,
@@ -435,6 +454,7 @@ if (isset($_SESSION['Username'])) {
                     'status'    => $status,
                     'member'    => $member,
                     'catrgory'  => $cat,
+                    'tags'      => $tags,
                     'itemid'    => $itemid
                 ));
                 // Echo success msg
