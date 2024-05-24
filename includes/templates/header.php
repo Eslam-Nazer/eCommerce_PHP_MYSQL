@@ -57,7 +57,7 @@
             -->
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <?php
-                    $categories = getCats();
+                    $categories = getCats('WHERE parent = 0');
                     foreach ($categories as $cat) {
                         echo '<li class="nav-link"><a class="nav-link active" href="categories.php?pageid=' . $cat['ID'] .'">' . $cat['Name'] . '</a></li>';
                     }
