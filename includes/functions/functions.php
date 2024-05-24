@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Get categories record Function V1.0
+ * Get categories record Function V1.2
+ * $where = where condition for statment
  */
 
-    function getCats() {
+    function getCats($where = NULL) {
         global $con;
 
-        $stmtCats = $con->prepare('SELECT * FROM categories ORDER BY ID');
+        $stmtCats = $con->prepare('SELECT * FROM categories ' . $where . ' ORDER BY ID');
         $stmtCats->execute();
         $cats = $stmtCats->fetchAll();
 
