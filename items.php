@@ -79,7 +79,7 @@ $item = $stmt->fetch();
             'itemid' => $itemid
         ));
         $comments = $stmt->fetchAll();
-        foreach ($comments as $comment) { 
+        foreach ($comments as $comment) {
             ?>
             <div class="col-sm-2 text-center">
                 <img src="img.jpg" class="rounded-circle img-thumbnail" alt="...">
