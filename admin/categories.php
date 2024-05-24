@@ -19,7 +19,7 @@ if (isset($_SESSION['Username'])) {
             $sort = $_GET['sort'];
         }
 
-        $stmt = $con->prepare('SELECT * FROM categories ORDER BY Ordering '. $sort);
+        $stmt = $con->prepare('SELECT * FROM categories WHERE parent = 0 ORDER BY Ordering '. $sort);
         $stmt->execute();
         $cats = $stmt->fetchAll();
 ?>
@@ -73,6 +73,21 @@ if (isset($_SESSION['Username'])) {
 
                 echo '</div>';
                 echo '</div>';
+                $stmt = $con->prepare('SELECT * FROM categories WHERE parent =' . $cat['ID']);
+                $stmt->execute();
+                $childCats = $stmt->fetchAll();
+                if (!empty($childCats)) {
+                    echo '<h5 class="child-head">Sub Categories</h5>';
+                    foreach ($childCats as $childCat) {
+                        echo '<ul class="list-unstyled child-ul">';
+                            echo '<li class="child-list">
+                            <a href="categories.php?do=Edit&catid=' . $childCat['ID'] . '">' . $childCat['Name'] . ' </a>
+                            <a class="show-delete confirm" href="categories.php?do=Delete&catid=' . $childCat['ID'] .
+                            '">Delete</a>
+                            </li>';
+                        echo '</ul>';
+                    }
+                }
                 echo '<hr />';
             }
 ?>
@@ -111,6 +126,21 @@ if (isset($_SESSION['Username'])) {
                         <label for="floatingInput" style="font-weight: bold;">Description</label>
                     </div>
                     <!-- End Description field -->
+                    <!-- Start Categories type -->
+                    <div class="form-floating mb-3 col-sm-10 col-md6 col-lg-5">
+                        <select name="parent" style="display: none;">
+                            <option value="0">Choose category type or None if parent</option>
+                            <?php 
+                            $stmt = $con->prepare('SELECT ID, Name FROM categories WHERE parent = 0');
+                            $stmt->execute();
+                            $categories = $stmt->fetchAll();
+                            foreach ($categories as $category) {
+                                echo '<option value="' . $category['ID'] . '">' . $category['Name'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <!-- End Categories type -->
                     <!-- Start Ordering field -->
                     <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
                         <input class="form-control" type="text" name="ordering" id="floatingInput" placeholder="Number for arrange the categories">
@@ -182,6 +212,7 @@ if (isset($_SESSION['Username'])) {
         $visible    = $_POST['visibility'];
         $comment    = $_POST['commenting'];
         $ads        = $_POST['ads'];
+        $parent     = $_POST['parent'];
 
         $check = checkItems('Name', 'categories', $name);
 
@@ -190,14 +221,15 @@ if (isset($_SESSION['Username'])) {
             redirectHome($errorMsg, 4, '?do=Add');
         } else {
             if (! empty($name)) {
-                $stmt = $con->prepare('INSERT INTO categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_ads) VALUES(:name, :desc, :order, :visible, :comment, :ads)');
+                $stmt = $con->prepare('INSERT INTO categories(Name, Description, parent, Ordering, Visibility, Allow_Comment, Allow_ads) VALUES(:name, :desc, :parent, :order, :visible, :comment, :ads)');
                 $stmt->execute(array(
                     'name'      => $name,
                     'desc'      => $desc,
                     'order'     => $order,
                     'visible'   => $visible,
                     'comment'   => $comment,
-                    'ads'       => $ads
+                    'ads'       => $ads,
+                    'parent'    => $parent,
                 ));
 
                 $successMsg = '<div class="alert alert-success" role="alert"><i class="fa-solid fa-circle-check"></i> ' . $stmt->rowCount() . ' Record Inserted</div>';
@@ -250,6 +282,30 @@ if (isset($_SESSION['Username'])) {
                     <label for="floatingInput" style="font-weight: bold;">Ordering</label>
                 </div>
                 <!-- End Ordering field -->
+                <!-- Start Categories type -->
+                <?php 
+                $stmt = $con->prepare('SELECT ID,parent FROM categories WHERE ID = ' . $catid);
+                $stmt->execute();
+                $ID = $stmt->fetch();
+                if ($ID['parent'] != 0) {
+                    ?>
+                    <div class="form-floating mb-3 col-sm-10 col-md6 col-lg-5">
+                        <select name="parent" style="display: none;">
+                            <option value="0">Choose category type or None if parent</option>
+                            <?php 
+                            $stmt = $con->prepare('SELECT ID, Name FROM categories WHERE parent = 0');
+                            $stmt->execute();
+                            $categories = $stmt->fetchAll();
+                            foreach ($categories as $category) {
+                                echo '<option value="' . $category['ID'] . '"';
+                                if ($ID['parent'] == $category['ID']) { echo 'selected'; };
+                                echo '>' . $category['Name'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                <?php } ?>
+                <!-- End Categories type -->
                 <!-- Start Visibility field -->
                 <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
                     <div><strong>Visibility:</strong></div>
@@ -318,16 +374,18 @@ if (isset($_SESSION['Username'])) {
             $name   = $_POST['name'];
             $desc   = $_POST['description'];
             $order  = $_POST['ordering'];
+            $parent = $_POST['parent'];
             // Get Variable form radio value
             $visible = $_POST['visibility'];
             $comment = $_POST['commenting'];
             $ads     = $_POST['ads'];
 
             // Update the database with this varible value
-            $stmt = $con->prepare('UPDATE categories SET Name = :name, Description = :desc, Ordering = :order, Visibility = :visible, Allow_Comment = :comment, Allow_ads = :ads WHERE ID = :id');
+            $stmt = $con->prepare('UPDATE categories SET Name = :name, Description = :desc, parent = :parent, Ordering = :order, Visibility = :visible, Allow_Comment = :comment, Allow_ads = :ads WHERE ID = :id');
             $stmt->execute(array(
                 'name'      => $name,
                 'desc'      => $desc,
+                'parent'    => $parent,
                 'order'     => $order,
                 'visible'   => $visible,
                 'comment'   => $comment,
