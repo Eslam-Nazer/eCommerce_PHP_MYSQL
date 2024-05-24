@@ -38,4 +38,11 @@ $(function () {
     $('.cat h3').click(function () {
         $(this).next('.full-view').fadeToggle();
     });
+
+    // Delete view and hide in sub-categories
+    $('.child-list').hover(function () {
+        $(this).find('.show-delete').fadeIn(400);
+    }, function () {
+        $(this).find('.show-delete').fadeOut(400);
+    });
 });
