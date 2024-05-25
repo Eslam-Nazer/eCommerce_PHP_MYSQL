@@ -77,7 +77,7 @@ if (isset($_SESSION['Username'])) {
                                 foreach ($Lusers as $user) {
                                     echo '<li><strong>' . $user['Username'] . '</strong><a href="members.php?do=Edit&userid=' . $user['UserID'] . '"><span class="btn btn-sm btn-success float-end"><i class="fa-regular fa-pen-to-square"></i> Edit</span></a>';
                                     if($user['RegStatus'] == 0) {
-                                        echo '<a href="?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-sm btn-info activate float-end"><i class="fa-solid fa-check"></i> Activate</a>';
+                                        echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-sm btn-info activate float-end"><i class="fa-solid fa-check"></i> Activate</a>';
                                     }
                                     echo '</li>';
                                 }
