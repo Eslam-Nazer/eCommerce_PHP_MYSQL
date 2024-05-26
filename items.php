@@ -29,6 +29,16 @@ $item = $stmt->fetch();
                 <li><i class="fa-solid fa-globe fa-fw"></i><span>Made in</span> : <?php echo $item['Country_Made'] ?></li>
                 <li><i class="fa-solid fa-layer-group fa-fw"></i><span>Category</span> : <a href="categories.php?pageid=<?php echo $item['Cat_ID'] ?>&pagename=<?php echo $item['NameOfCat'] ?>"><?php echo $item['NameOfCat'] ?></a></li>
                 <li><i class="fa-solid fa-user-check fa-fw"></i><span>Added by</span> : <?php echo $item['Username'] ?></li>
+                <li class="item-tag"><i class="fa-solid fa-tag fa-fw"></i><span>Tags</span> :
+                <?php 
+                if (!empty($item['tags'])){
+                    $alltags = explode(' ', $item['tags']);
+                    foreach ($alltags as $tag) {
+                        $lowerTags = str_replace( ' ', '' ,(strtolower($tag)));
+                        echo '<a class="tag-btn" href="tags.php?name=' . $lowerTags . '">' . $tag . '</a>';
+                    } 
+                }?>
+                </li>
             </ul>
         </div>
     </div>
