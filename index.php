@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 $pageTitle = 'Home';
 include 'init.php';
@@ -12,7 +13,7 @@ include 'init.php';
         $items = $stmt->fetchAll();
         foreach($items as $item){
             if ($item['Status'] == 1) {?>
-                <div class="col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-3 mt-4">
                     <div class="item-box card">
                         <span class="price-tag"><?php echo $item['Price']; ?></span>
                         <img src="img.jpg" class="card-img-top img-thumbnail" alt="Iamge here">
@@ -35,4 +36,5 @@ include 'init.php';
 
 <?php
 include $tplDir . 'footer.php';
+ob_end_flush();
 ?>
