@@ -6,12 +6,13 @@ include 'init.php';
 if (isset($_SESSION['user'])) {
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $formErrors = array();
-        $name    = filteringInput($_POST['name'], 'STRING');
-        $desc    = filteringInput($_POST['description'], 'STRING');
-        $price   = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
-        $country = filteringInput($_POST['country'], "STRING");
-        $status  = filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
+        $name         = filteringInput($_POST['name'], 'STRING');
+        $desc         = filteringInput($_POST['description'], 'STRING');
+        $price        = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
+        $country      = filteringInput($_POST['country'], "STRING");
+        $status       = filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
         $category     = filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
+        $tags         = filteringInput($_POST['tags'], 'STRING');
 
         if (strlen($name) < 4) {
             $formErrors[] = 'Name of item must be at least 4 characters';
@@ -32,8 +33,8 @@ if (isset($_SESSION['user'])) {
             $formErrors[] = 'Category of item must be not empty';
         }
         if (empty($formErrors)) {
-            $stmt = $con->prepare('INSERT INTO Items(Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, Member_ID) 
-            VALUES(:name, :desc, :price, now(), :country, :status, :category, :user)');
+            $stmt = $con->prepare('INSERT INTO Items(Name, Description, Price, Add_Date, Country_Made, Status, Cat_ID, tags, Member_ID) 
+            VALUES(:name, :desc, :price, now(), :country, :status, :category,  :tags, :user)');
             $stmt->execute(array(
                 'name'     => $name,
                 'desc'     => $desc,
@@ -41,10 +42,11 @@ if (isset($_SESSION['user'])) {
                 'country'  => $country,
                 'status'   => $status,
                 'category' => $category,
+                'tags'     => $tags,
                 'user'     => $_SESSION['uid']
             ));
             if ($stmt) {
-                $successMsg =  '<div class="alert alert-success" role="alert"><i class"fa-solid fa-circle-check"> Item add successfully</i></div>';
+                $successMsg =  '<div class="alert alert-success mt-3" role="alert"><i class="fa-solid fa-circle-check"></i> Item add successfully</i></div>';
             }
         }
     }
@@ -98,16 +100,28 @@ if (isset($_SESSION['user'])) {
                                 <select name="category" required>
                                     <option value="0" selected>Choose Category</option>
                                     <?php
-                                    $stmt = $con->prepare('SELECT ID, Name FROM categories');
+                                    $stmt = $con->prepare('SELECT ID, Name FROM categories WHERE parent = 0');
                                     $stmt->execute();
                                     $cats = $stmt->fetchAll();
                                     foreach ($cats as $cat) {
                                         echo '<option value="' . $cat['ID'] . '">' . $cat['Name'] . '</option>';
+                                        $stmt2 = $con->prepare('SELECT ID, Name FROM categories WHERE parent =' . $cat['ID']);
+                                        $stmt2->execute();
+                                        $subCats = $stmt2->fetchAll();
+                                        foreach ($subCats as $subCat) {
+                                            echo '<option value="' . $subCat['ID'] . '">' . $cat['Name']  . ' > ' . $subCat['Name'] . '</option>';
+                                        }
                                     }
                                     ?>
                                 </select>
                             </div>
                             <!-- End Category field -->
+                            <!-- Start Tags field -->
+                            <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-9">
+                                <input type="text" name="tags" id="floatingInput" class="form-control" placeholder="Type tags">
+                                <label for="floatingInput" style="font-weight: bold;">Tags</label>
+                            </div>
+                            <!-- End Tags field -->
                             <!-- Start save button -->
                                 <input type="submit" name="insert" value="Add Item" class="btn btn-primary btn-lg">
                             <!-- End save button -->
