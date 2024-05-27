@@ -88,7 +88,7 @@
             <h1 class="text-center">Add New Member</h1>
 
             <div class="container edit-form">
-                <form action="?do=Insert" method="post">
+                <form action="?do=Insert" method="post" enctype="multipart/form-data">
                     <!-- Start username field -->
                     <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
                         <input class="form-control" type="text" name="username" id="floatingInput" placeholder="Username To Login Into Shop" autocomplete="off" required>
@@ -112,7 +112,12 @@
                         <input class="form-control" type="text" name="fullname" id="floatingInput" placeholder="Your Full Name Apper In Your Profile Page" required>
                         <label for="floatingInput" style="font-weight: bold;">Full Name</label>
                     </div>
-                    <!-- Start FullName field -->
+                    <!-- End FullName field -->
+                    <!-- Start Avatar field -->
+                    <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
+                        <input class="form-control" type="file" name="avatar" required>
+                    </div>
+                    <!-- End Avatar field -->
                     <!-- Start save button -->
                     <div class="form-group row mb-3">
                         <div class="update-btn col-sm-5 d-grid gap-2">
