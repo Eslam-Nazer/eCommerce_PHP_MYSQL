@@ -137,6 +137,16 @@
                     echo '<h1 class="text-center">Add New Member</h1>';
                     echo '<div class="container edit-form">';
 
+                    // Get upload variables
+                    $avatarName = $_FILES['name'];
+                    $avatarSize = $_FILES['size'];
+                    $avatarTmp  = $_FILES['tmp_name'];
+                    $avatarType = $_FILES['type'];
+
+                    $avatarExtension = ['jpeg','jpg','png','gif'];
+                    
+
+                    // Get variables from form
                     $username = $_POST['username'];
                     $password = $_POST['password'];
                     $email    = $_POST['email'];
