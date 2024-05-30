@@ -143,9 +143,8 @@
                     $avatarTmp  = $_FILES['tmp_name'];
                     $avatarType = $_FILES['type'];
 
-                    $avatarExtension = ['jpeg','jpg','png','gif'];
-                    
-
+                    $avatarAllowedExtension = ['jpeg','jpg','png','gif'];
+                    $avatarExtension = strtolower(end(explode('.', $avatarExtension)));
                     // Get variables from form
                     $username = $_POST['username'];
                     $password = $_POST['password'];
@@ -173,6 +172,13 @@
 
                     if (empty($fullname)){
                         $formErrors[] = "Full Name can't be empty";
+                    }
+
+                    if(!empty($avatarName) && !in_array($avatarExtension, $avatarAllowedExtension)) {
+                        $formErrors[] = "This extension not <strong>Allowed</strong>";
+                    }
+                    if(empty($avatarName)) {
+                        $formErrors[] = "Avatar is <strong>required</strong>";
                     }
 
                     foreach ($formErrors as $error) {
