@@ -115,7 +115,7 @@
                     <!-- End FullName field -->
                     <!-- Start Avatar field -->
                     <div class="form-floating mb-3 col-sm-10 col-md-6 col-lg-5">
-                        <input class="form-control" type="file" name="avatar" required>
+                        <input class="form-control" type="file" name="avatarinfo" required>
                     </div>
                     <!-- End Avatar field -->
                     <!-- Start save button -->
@@ -136,15 +136,16 @@
                     
                     echo '<h1 class="text-center">Add New Member</h1>';
                     echo '<div class="container edit-form">';
-
+                    // Get upload array
+                    $avatarinfo = $_FILES['avatarinfo'];
                     // Get upload variables
-                    $avatarName = $_FILES['name'];
-                    $avatarSize = $_FILES['size'];
-                    $avatarTmp  = $_FILES['tmp_name'];
-                    $avatarType = $_FILES['type'];
-
+                        $avatarName = $avatarinfo['name'];
+                        $avatarSize = $avatarinfo['size'];
+                        $avatarTmp  = $avatarinfo['tmp_name'];
+                        $avatarType = $avatarinfo['type'];
                     $avatarAllowedExtension = ['jpeg','jpg','png','gif'];
-                    $avatarExtension = strtolower(end(explode('.', $avatarExtension)));
+                    $tmp = explode('.', $avatarName);
+                    $avatarExtension = strtolower(end($tmp));
                     // Get variables from form
                     $username = $_POST['username'];
                     $password = $_POST['password'];
@@ -180,25 +181,32 @@
                     if(empty($avatarName)) {
                         $formErrors[] = "Avatar is <strong>required</strong>";
                     }
+                    if($avatarSize > 4194304) {
+                        $formErrors[] = "Avatar size can't be larger than 4mp";
+                    }
 
                     foreach ($formErrors as $error) {
                         echo '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-circle-xmark"></i> ' . $error . '</div>';
                     }
 
                     if(empty($formErrors)) {
+
+                        $avatar = rand(0, 1000000000) . "_" . $avatarName;
                         $checkUsername = checkItems("Username", "users", $username) ;
                         if($checkUsername == 1) {
                             $errorMsg = '<div class="alert alert-danger" role="alert"><i class="fa-solid fa-circle-xmark"></i> Sorry This User Name is not available to you. Please add another one </div>';
 
                             redirectHome($errorMsg, 5, "members.php?do=Add");
                         } else {
-                            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, RegStatus, Date) VALUES(:uname, :pass, :email, :fname, 1, now())");
+                            $stmt = $con->prepare("INSERT INTO users(Username, Password, Email, FullName, RegStatus, Date, avatar) VALUES(:uname, :pass, :email, :fname, 1, now(), :avatar)");
                             $stmt->execute(array(
-                                'uname' => $username,
-                                'pass'  => $hashPassword,
-                                'email' => $email,
-                                'fname' => $fullname
+                                'uname'     => $username,
+                                'pass'      => $hashPassword,
+                                'email'     => $email,
+                                'fname'     => $fullname,
+                                'avatar'    => $avatar
                             ));
+                            move_uploaded_file($avatarTmp, 'upload\avatar\\' . $avatar);
                             $success = '<div class="alert alert-success" role="alert"><i class="fa-solid fa-circle-check"></i>' . $stmt->rowCount() . ' Recored Inserted</div>';
                             redirectHome($success, 5, "members.php");
                         }
