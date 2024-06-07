@@ -36,6 +36,7 @@
                     <table class="main-table table table-bordered text-center">
                         <tr>
                             <td><strong>#ID</strong></td>
+                            <td><strong>Avatar</strong></td>
                             <td><strong>Username</strong></td>
                             <td><strong>Email</strong></td>
                             <td><strong>Full Name</strong></td>
@@ -47,6 +48,13 @@
                         foreach ($rows as $row) {
                             echo '<tr>';
                                 echo '<td><strong>' . $row['UserID'] . '</strong></td>';
+                                echo '<td>';
+                                if(empty($row['avatar'])) {
+                                    echo '<img src="upload\default\default.jpg" alt="..." />';
+                                } else {
+                                    echo '<img src="upload\avatar\\'. $row['avatar'] .'" alt="..."/>';
+                                }
+                                echo '</td>';
                                 echo '<td><strong>' . $row['Username'] . '</strong></td>';
                                 echo '<td><strong>' . $row['Email'] . '</strong></td>';
                                 echo '<td><strong>' . $row['FullName'] . '</strong></td>';
